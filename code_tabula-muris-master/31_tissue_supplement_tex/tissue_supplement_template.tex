@@ -1,0 +1,65 @@
+\documentclass[11pt,]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage[a4paper, margin=1.75cm]{geometry}
+\usepackage[page]{totalcount}
+%\geometry{landscape}                		% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+\usepackage{textcomp}% for '\texttimes' macro
+
+
+% Fix horizontal spacing for table of contents only
+% from https://tex.stackexchange.com/a/7421
+\usepackage[titles]{tocloft}
+
+\setlength{\cftsubsecnumwidth}{4em}% Set length of number width in ToC for \subsection
+\setlength{\cftsubsubsecnumwidth}{4em}% Set length of number width in ToC for \subsubsection
+\makeatother
+
+% Reference sections by name
+\usepackage{nameref}
+
+% Add hyperlinks across text
+\usepackage{hyperref}
+
+% Make command to reference section name
+\makeatletter
+\newcommand*{\currentsection}{\@currentlabelname}
+\makeatother
+
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}} % set the \leftmark
+
+
+% Nice looking tables
+\usepackage{booktabs}
+
+% Add header
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lfoot{Tabula Muris Tissue Supplement}
+\lhead{\itshape\nouppercase{\rightmark}}
+\rfoot{Page \thepage~of~\totalpages}
+
+%SetFonts
+
+%SetFonts
+
+
+\title{Tabula Muris Tissue Supplement}
+\author{Tabula Muris Consortium}
+\date{}							% Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+\tableofcontents
+%\listoffigures
+
+
+%%% --- INCLUDE TISSUES HERE --- %
+
+
+\end{document}  

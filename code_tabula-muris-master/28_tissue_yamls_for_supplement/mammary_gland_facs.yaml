@@ -1,0 +1,56 @@
+---
+GENES:
+- Aldh1a3
+- Ccl5
+- Cd14
+- Cd19
+- Cd3e
+- Cd3g
+- Cd55
+- Cd74
+- Cd79a
+- Cdh5
+- Csf1r
+- Elf5
+- Esam
+- Esr1
+- Fn1
+- Krt14
+- Krt17
+- Krt18
+- Krt19
+- Krt5
+- Krt8
+- Lgr5
+- Ly6c1
+- Nkg7
+- Pecam1
+- Pgr
+- Prlr
+- Ptprc
+- Vim
+GROUPBY: null
+METHOD: facs
+NPCS: 10
+RES: 0.5
+SUBSET:
+  SUBSETA:
+    NAME: Basal
+    FILTER_COLUMN: cell_ontology_class
+    FILTER_VALUE: basal cell
+    GENES:
+    - Areg
+    - Cited1
+    - Csn3
+    - Fos
+    - Id1
+    - Id2
+    - Igfbp2
+    - Igfpb4
+    - Prlr
+    - Procr
+    - Vcam1
+    GROUPBY: null
+    NPCS: 10
+    RES: 0.5
+TISSUE: Mammary_Gland

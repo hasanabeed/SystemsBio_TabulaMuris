@@ -1,0 +1,32 @@
+---
+GENES:
+- Aldh1a3
+- Ccl5
+- Cd14
+- Cd19
+- Cd3e
+- Cd3g
+- Cd55
+- Cd74
+- Cd79a
+- Csf1r
+- Esam
+- Esr1
+- Fn1
+- Krt14
+- Krt17
+- Krt18
+- Krt19
+- Krt5
+- Krt8
+- Ly6c1
+- Nkg7
+- Pecam1
+- Pgr
+- Ptprc
+- Vim
+GROUPBY: null
+METHOD: droplet
+NPCS: 15
+RES: 0.5
+TISSUE: Mammary_Gland

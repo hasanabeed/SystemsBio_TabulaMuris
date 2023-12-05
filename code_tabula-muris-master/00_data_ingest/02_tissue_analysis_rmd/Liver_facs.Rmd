@@ -1,0 +1,178 @@
+---
+title: "Liver FACS Notebook"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+Enter the name of the tissue you want to analyze.
+
+```{r}
+tissue_of_interest = "Liver"
+library(here)
+source(here("00_data_ingest", "02_tissue_analysis_rmd", "boilerplate.R"))
+tiss = load_tissue_facs(tissue_of_interest)
+```
+
+We can visualize top genes in each principal component.
+
+```{r, echo=FALSE}
+PCHeatmap(object = tiss, pc.use = 1:3, cells.use = 500, do.balanced = TRUE, label.columns = FALSE, num.genes = 8)
+```
+
+We then project onto just the top principal components. This has the effect of keeping the major directions of variation in the data and, ideally, supressing noise. A decent rule of thumb is to pick the elbow in the plot below.
+
+```{r}
+PCElbowPlot(object = tiss)
+```
+
+Choose the number of principal components to use.
+
+```{r}
+n.pcs = 11
+```
+
+## Cluster
+
+```{r}
+# Set resolution 
+res.used <- 1
+
+tiss <- FindClusters(object = tiss, reduction.type = "pca", dims.use = 1:n.pcs, 
+    resolution = res.used, print.output = 0, save.SNN = TRUE)
+```
+
+We use tSNE solely to visualize the data.
+
+```{r}
+tiss <- RunTSNE(object = tiss, dims.use = 1:n.pcs, seed.use = 10, perplexity=30)
+```
+
+```{r}
+TSNEPlot(object = tiss, do.label = T, pt.size = 1.2, label.size = 4)
+```
+
+## Label clusters using marker genes
+
+Check expression of genes useful for indicating cell type.
+
+```{r}
+genes_hep = c('Alb', 'Ttr', 'Apoa1', 'Serpina1c') #hepatocyte
+genes_endo = c('Pecam1', 'Nrp1', 'Kdr','Oit3') # endothelial
+genes_kuppfer = c('Emr1', 'Clec4f', 'Cd68', 'Irf7') # Kuppfer cells
+genes_nk = c('Zap70', 'Il2rb', 'Nkg7', 'Cxcr6') # Natural Killer cells
+genes_b = c('Cd79a', 'Cd79b', 'Cd74', 'Cd19') # B Cells
+
+genes_all = c(genes_hep, genes_endo, genes_kuppfer, genes_nk, genes_b)
+```
+
+In the tSNE plots below, the intensity of each point represents the log-normalized gene expression $N_{ij}$.
+
+```{r, echo=FALSE, fig.height=20, fig.width=16}
+FeaturePlot(tiss, genes_all, pt.size = 3, nCol = 4, cols.use = c("lightgrey", "blue"), no.legend = F)
+```
+
+Dotplots show, for each cluster and gene, the fraction of cells with at least one read for the gene (circle size) and the average scaled expression for that gene among the cells expressing it (circle color).
+
+```{r, echo=FALSE}
+DotPlot(tiss, genes_all, plot.legend = T, col.max = 2.5, x.lab.rot = T)
+```
+
+The low but nonzero levels of Albumin present in all clusters is consistent with a small amount of leakage, either through physical contamination or index hopping. Nevertheless, the absolute levels of expression confirm a sharp difference between the hepatocyte clusters and the others.
+
+```{r, echo=FALSE, fig.height=3, fig.width=6}
+VlnPlot(tiss, 'Alb', use.raw = T, do.return = T)
+```
+
+To confirm the identity of a cluster, you can inspect the genes differentially expressed in that cluster compared to the others.
+
+```{r}
+clust.markers7 <- FindMarkers(object = tiss, ident.1 = 7, 
+                              only.pos = TRUE, min.pct = 0.25, thresh.use = 0.25)
+```
+
+The top markers for cluster 7 include histocompatibility markers H2-*, consistent with the expression of other B-cell markers seen above.
+
+```{r}
+head(clust.markers7)
+```
+
+Using the markers, we can confidentaly label the clusters. We provide both a free annotation (where anything name can be used) and a cell ontology class. The latter uses a controlled vocabulary for easy comparison between studies and different levels of the taxonomy.
+
+```{r}
+tiss <- StashIdent(object = tiss, save.name = "cluster.ids")
+
+cluster.ids <- c(0, 1, 2, 3, 4, 5, 6, 7, 8)
+
+free_annotation <- c(
+  NA,
+  NA,
+  NA,
+  NA,
+  NA,
+  NA,
+  NA,
+  NA,
+  "NK/NKT cells")
+
+cell_ontology_class <-c(
+  "endothelial cell of hepatic sinusoid",
+  "hepatocyte",
+  "hepatocyte",
+  "hepatocyte",
+  "hepatocyte",
+  "Kupffer cell",
+  "hepatocyte",
+  "B cell",
+  "natural killer cell")
+
+tiss = stash_annotations(tiss, cluster.ids, free_annotation, cell_ontology_class)
+```
+
+
+## Checking for batch effects
+
+Color by metadata, like plate barcode, to check for batch effects. Here we see that the clusters are segregated by sex.
+
+```{r}
+TSNEPlot(object = tiss, do.return = TRUE, group.by = "mouse.id")
+```
+
+Nevertheless, every cluster contains cells from multiple mice.
+
+```{r}
+table(FetchData(tiss, c('mouse.id','ident')) %>% droplevels())
+```
+
+# Final coloring
+
+Color by cell ontology class on the original tSNE.
+
+```{r}
+TSNEPlot(object = tiss, group.by = "cell_ontology_class")
+```
+
+
+# Save the Robject for later
+
+```{r}
+filename = here('00_data_ingest', '04_tissue_robj_generated', 
+                     paste0("facs_", tissue_of_interest, "_seurat_tiss.Robj"))
+print(filename)
+save(tiss, file=filename)
+```
+
+```{r}
+# To reload a saved object
+#filename = here('00_data_ingest', '04_tissue_robj_generated',
+#                      paste0("facs_", tissue_of_interest, "_seurat_subtiss.Robj"))
+#load(file=filename)
+```
+
+# Export the final metadata
+
+```{r}
+save_annotation_csv(tiss, tissue_of_interest, "facs")
+```
+
+

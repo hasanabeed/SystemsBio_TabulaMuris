@@ -1,0 +1,35 @@
+---
+GENES:
+- C1qa
+- Cav1
+- Cdh5
+- Col1a1
+- Col1a2
+- Col3a1
+- Dcn
+- Ddr2
+- Fabp4
+- H2-Eb1
+- Myh11
+- Myl7
+- Nppa
+- Npr3
+- Pecam1
+- Sln
+- Tcf21
+- Tnni3
+GROUPBY: null
+METHOD: droplet
+NPCS: 15
+RES: 0.5
+SUBSET:
+  SUBSETA:
+    FILTER_COLUMN: cluster.ids
+    FILTER_VALUE: 2
+    GENES:
+    - Dcn
+    - Myh11
+    GROUPBY: null
+    NPCS: 5
+    RES: 1
+TISSUE: Heart_and_Aorta

@@ -1,0 +1,69 @@
+---
+GENES:
+- Alb
+- Apoa1
+- Ass1
+- Cd19
+- Cd68
+- Cd74
+- Cd79a
+- Cd79b
+- Cdh1
+- Clec4f
+- Cxcr6
+- Cyp2e1
+- Cyp2f2
+- Emr1
+- Epcam
+- Glul
+- Gstp1
+- Gulo
+- Gzma
+- Hal
+- Hamp
+- Il2rb
+- Irf7
+- Kdr
+- Krt19
+- Krt7
+- Nkg7
+- Nrp1
+- Oat
+- Oit3
+- Pck1
+- Pecam1
+- Ptprc
+- Serpina1c
+- Ttr
+- Ubb
+- Zap70
+GROUPBY: null
+METHOD: droplet
+NPCS: 10
+RES: 3.5
+SUBSET:
+  SUBSETA:
+    NAME: Hepatocytes
+    FILTER_COLUMN: cell_ontology_class
+    FILTER_VALUE: hepatocyte
+    GENES:
+    - Alb
+    - Apoa1
+    - Ass1
+    - Cdh1
+    - Cyp2e1
+    - Cyp2f2
+    - Glul
+    - Gstp1
+    - Gulo
+    - Hal
+    - Hamp
+    - Oat
+    - Pck1
+    - Serpina1c
+    - Ttr
+    - Ubb
+    GROUPBY: null
+    NPCS: 8
+    RES: 0.5
+TISSUE: Liver

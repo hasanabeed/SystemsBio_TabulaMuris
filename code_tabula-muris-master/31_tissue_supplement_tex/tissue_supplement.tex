@@ -1,0 +1,96 @@
+\documentclass[11pt,]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage[a4paper, margin=1.75cm]{geometry}
+\usepackage[page]{totalcount}
+%\geometry{landscape}                		% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+\usepackage{textcomp}% for '\texttimes' macro
+
+
+% Fix horizontal spacing for table of contents only
+% from https://tex.stackexchange.com/a/7421
+\usepackage[titles]{tocloft}
+
+\setlength{\cftsubsecnumwidth}{4em}% Set length of number width in ToC for \subsection
+\setlength{\cftsubsubsecnumwidth}{4em}% Set length of number width in ToC for \subsubsection
+\makeatother
+
+% Reference sections by name
+\usepackage{nameref}
+
+% Add hyperlinks across text
+\usepackage{hyperref}
+
+% Make command to reference section name
+\makeatletter
+\newcommand*{\currentsection}{\@currentlabelname}
+\makeatother
+
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}} % set the \leftmark
+
+
+% Nice looking tables
+\usepackage{booktabs}
+
+% Add header
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lfoot{Tabula Muris Tissue Supplement}
+\lhead{\itshape\nouppercase{\rightmark}}
+\rfoot{Page \thepage~of~\totalpages}
+
+%SetFonts
+
+%SetFonts
+
+
+\title{Tabula Muris Tissue Supplement}
+\author{Tabula Muris Consortium}
+\date{}							% Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+\tableofcontents
+%\listoffigures
+
+
+\include{Aorta_facs_auto_generated}
+\include{Bladder_droplet_auto_generated}
+\include{Bladder_facs_auto_generated}
+\include{Brain_Myeloid_facs_auto_generated}
+\include{Brain_Non-Myeloid_facs_auto_generated}
+\include{Diaphragm_facs_auto_generated}
+\include{Fat_facs_auto_generated}
+\include{Heart_facs_auto_generated}
+\include{Heart_and_Aorta_droplet_auto_generated}
+\include{Kidney_droplet_auto_generated}
+\include{Kidney_facs_auto_generated}
+\include{Large_Intestine_facs_auto_generated}
+\include{Limb_Muscle_droplet_auto_generated}
+\include{Limb_Muscle_facs_auto_generated}
+\include{Liver_droplet_auto_generated}
+\include{Liver_facs_auto_generated}
+\include{Lung_droplet_auto_generated}
+\include{Lung_facs_auto_generated}
+\include{Mammary_Gland_droplet_auto_generated}
+\include{Mammary_Gland_facs_auto_generated}
+\include{Marrow_droplet_auto_generated}
+\include{Marrow_facs_auto_generated}
+\include{Pancreas_facs_auto_generated}
+\include{Skin_facs_auto_generated}
+\include{Spleen_droplet_auto_generated}
+\include{Spleen_facs_auto_generated}
+\include{Thymus_droplet_auto_generated}
+\include{Thymus_facs_auto_generated}
+\include{Tongue_droplet_auto_generated}
+\include{Tongue_facs_auto_generated}
+\include{Trachea_droplet_auto_generated}
+\include{Trachea_facs_auto_generated}
+
+
+\end{document}  

@@ -1,0 +1,63 @@
+---
+title: "MACA_plate_dissociation.Rmd"
+output: html_document
+---
+
+Source the `loader.Rmd` file first.
+
+Load the requisite packages and some additional helper functions.
+
+```{r}
+library(Seurat)
+library(dplyr)
+library(Matrix)
+library(here)
+```
+
+Read in genes affected by dissociation
+
+```{r}
+csv = here('00_data_ingest', '20_dissociation_genes', 'genes_affected_by_dissociation_unix.csv')
+dissociation_genes = read.csv(csv, stringsAsFactors = FALSE)$Gene
+```
+
+
+Run PCA on dissociation genes only and plot median of each plate
+
+```{r, echo=FALSE, fig.height=4, fig.width=8}
+tiss = RunPCA(tiss, pc.genes=dissociation_genes, do.print=FALSE)
+tiss <- ProjectPCA(object = tiss, do.print = FALSE)
+PCHeatmap(object = tiss, pc.use = 1:6, cells.use = 500, do.balanced = TRUE, label.columns = FALSE, num.genes = 8)
+
+FetchData(tiss, vars.all = c('plate.barcode.x','tissue', 'PC1', 'PC2', 'color')) %>% 
+  group_by(plate.barcode.x, tissue, color) %>%
+  summarize(median_PC1 = median(PC1),
+            median_PC2 = median(PC2)) %>%
+  ggplot(aes(x = median_PC1, y = median_PC2, color = tissue)) + geom_point(aes(color = color)) +
+       scale_color_identity(breaks = tissue_colors$color, 
+                        labels = tissue_colors$anno_tissue, 
+                        guide = "legend") + 
+  guides(colour = guide_legend(override.aes = list(size=2)))
+
+ggsave('dissociation_genes_pca_medians.pdf')
+```
+
+
+```{r, fig.height=8, fig.width=8}
+dissociation_genes_in_data = dissociation_genes[dissociation_genes %in% rownames(tiss@scale.data)]
+length(dissociation_genes_in_data)
+tiss@meta.data$total.dissociation = Matrix::colMeans(tiss@data[dissociation_genes_in_data,])
+
+FetchData(tiss, vars.all = c('plate.barcode.x', 'anno_tissue', 'color', 'total.dissociation'))%>%
+            ggplot(aes(total.dissociation, ..density.., colour = color)) +
+  geom_freqpoly(binwidth = .05) +
+  facet_wrap(~ anno_tissue, ncol = 4) +
+  scale_color_identity(breaks = tissue_colors$color,
+                       labels = tissue_colors$anno_tissue,
+                       guide = "legend") +
+  ggtitle("Total dissociation")
+ggsave('dissociation_genes_tissue_distributions.pdf')
+```
+
+
+

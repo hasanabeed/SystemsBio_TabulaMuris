@@ -1,0 +1,32 @@
+---
+GENES:
+- Acta2
+- Aqp2
+- Cd3e
+- Cd68
+- Des
+- Egf
+- Emr1
+- Epcam
+- Itgam
+- Kcne1
+- Lyz2
+- Mme3
+- Pecam1
+- Podxl
+- Ptprc
+- Pvalb
+- Scnn1a
+- Slc12a1
+- Slc12a3
+- Slc22a12
+- Slc34a1
+- Umod
+- Vil1
+- Vim
+- Wt1
+GROUPBY: null
+METHOD: droplet
+NPCS: 10
+RES: 0.5
+TISSUE: Kidney
